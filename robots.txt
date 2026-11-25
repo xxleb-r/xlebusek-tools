@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xxleb-r.github.io/xlebusek-tools/sitemap.xml
