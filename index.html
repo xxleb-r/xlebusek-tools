@@ -644,6 +644,30 @@ body.light-theme .favorite-toggle{background:#edf3fb;color:#334963;border-color:
         <div class="result" id="tipResult" aria-live="polite">Здесь появится результат</div>
     </div>
 
+
+    <!-- ГЕНЕРАТОР СЛУЧАЙНЫХ ЧИСЕЛ -->
+    <div class="tool" data-category="generator">
+        <h3>🎲 Генератор случайных чисел</h3><p>Получай случайное целое число в заданном диапазоне.</p>
+        <label for="randomMin">От</label><input id="randomMin" type="number" value="1" step="1">
+        <label for="randomMax">До</label><input id="randomMax" type="number" value="100" step="1">
+        <button onclick="generateRandomNumber()">Сгенерировать</button><div class="result" id="randomNumberResult" aria-live="polite">Здесь появится число</div>
+    </div>
+    <!-- КАЛЬКУЛЯТОР ВРЕМЕНИ -->
+    <div class="tool" data-category="useful">
+        <h3>⏳ Калькулятор времени</h3><p>Узнай общую длительность в часах и минутах.</p>
+        <label for="timeHours">Часы</label><input id="timeHours" type="number" min="0" max="100000" value="1">
+        <label for="timeMinutes">Минуты</label><input id="timeMinutes" type="number" min="0" max="59" value="30">
+        <button onclick="calculateTime()">Рассчитать</button><div class="result" id="timeResult" aria-live="polite">Здесь появится результат</div>
+    </div>
+    <!-- ГЕНЕРАТОР ИГРОВЫХ КОМАНД -->
+    <div class="tool" data-category="generator">
+        <h3>🎮 Генератор игровых команд</h3><p>Вставь имена игроков — сайт случайно разделит их на команды.</p>
+        <label for="teamNames">Имена игроков (каждое с новой строки)</label>
+        <textarea id="teamNames" placeholder="Игрок 1&#10;Игрок 2&#10;Игрок 3&#10;Игрок 4"></textarea>
+        <label for="teamCount">Количество команд</label><input id="teamCount" type="number" min="2" max="20" value="2">
+        <button onclick="generateTeams()">Разделить на команды</button><div class="result" id="teamsResult" aria-live="polite">Здесь появятся команды</div>
+    </div>
+
 </section>
     </div>
 </div>
@@ -1068,6 +1092,30 @@ function calculateTip() {
     result.innerHTML = "Чаевые: <strong>" + format(tip) + "</strong><br>Итого: <strong>" + format(total) +
         "</strong><br>На человека: <strong>" + format(total / people) + "</strong>";
 }
+
+
+ 
+function generateRandomNumber() {
+ const a=document.getElementById("randomMin").value.trim(), b=document.getElementById("randomMax").value.trim(), out=document.getElementById("randomNumberResult");
+ const min=Number(a), max=Number(b);
+ if(a===""||b===""||!Number.isSafeInteger(min)||!Number.isSafeInteger(max)||min>max){out.textContent="Введи целые числа: первое не должно быть больше второго.";return;}
+ out.textContent="Случайное число: "+(Math.floor(Math.random()*(max-min+1))+min);
+}
+function calculateTime() {
+ const a=document.getElementById("timeHours").value.trim(), b=document.getElementById("timeMinutes").value.trim(), out=document.getElementById("timeResult");
+ const h=Number(a), m=Number(b);
+ if(a===""||b===""||!Number.isSafeInteger(h)||!Number.isSafeInteger(m)||h<0||h>100000||m<0||m>59){out.textContent="Укажи часы от 0 и минуты от 0 до 59.";return;}
+ const total=h*60+m; out.textContent=total+" минут = "+Math.floor(total/60)+" ч "+(total%60)+" мин.";
+}
+function generateTeams() {
+ const names=document.getElementById("teamNames").value.split(/\n/).map(x=>x.trim()).filter(Boolean), raw=document.getElementById("teamCount").value.trim(), count=Number(raw), out=document.getElementById("teamsResult");
+ if(names.length<2){out.textContent="Добавь хотя бы двух игроков — каждого с новой строки.";return;}
+ if(!Number.isInteger(count)||count<2||count>20||count>names.length){out.textContent="Количество команд должно быть от 2 до числа игроков (максимум 20).";return;}
+ for(let i=names.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[names[i],names[j]]=[names[j],names[i]];}
+ const teams=Array.from({length:count},()=>[]); names.forEach((name,i)=>teams[i%count].push(name));
+ out.innerHTML=teams.map((team,i)=>"<strong>Команда "+(i+1)+":</strong><br>"+team.map(escapeTeamName).join("<br>")).join("<br><br>");
+}
+function escapeTeamName(value){return value.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 
 </script>
 
