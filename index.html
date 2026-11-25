@@ -290,6 +290,27 @@ button {
         font-size: 10px;
     }
 }
+
+/* Боковая навигация категорий */
+.app-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:start}
+.sidebar{position:sticky;top:20px;padding:18px 12px;background:#111c33;border:1px solid #263653;border-radius:16px}
+.sidebar-title{padding:0 12px 14px;color:#a9bad3;font-size:13px;font-weight:bold;text-transform:uppercase;letter-spacing:.08em}
+#categoryFilters{display:flex;flex-direction:column;gap:7px}
+.category-filter{width:100%;display:flex;align-items:center;gap:11px;text-align:left;padding:12px;border:1px solid transparent;border-radius:10px;background:transparent;color:#c9d8ed;font-size:14px;font-weight:600;cursor:pointer}
+.category-filter:hover{background:#1a2b49}
+.category-filter.active{background:#17365b;border-color:#2467a4;color:#70c2ff}
+.tool-content{min-width:0}
+.tool[hidden]{display:none!important}
+@media(max-width:760px){
+ .app-layout{grid-template-columns:1fr;gap:18px}
+ .sidebar{position:static;padding:12px}
+ .sidebar-title{padding-bottom:10px}
+ #categoryFilters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .category-filter{font-size:13px;padding:10px 8px;gap:7px}
+ .welcome h2{font-size:28px}
+}
+@media(max-width:390px){#categoryFilters{grid-template-columns:1fr}}
+
 </style>
 <style>
 .category-filter{background:#172642;color:#dceaff;border:1px solid #304767;border-radius:20px;padding:10px 16px;cursor:pointer;font-size:14px}
@@ -317,14 +338,23 @@ button {
     <input id="toolSearch" type="search" placeholder="Например, пароль, возраст, QR-код..." oninput="filterTools()" aria-label="Поиск инструментов">
 </div>
 
-<div id="categoryFilters" style="max-width:900px;margin:0 auto 22px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
-    <button type="button" class="category-filter active" data-category-filter="all">Все инструменты</button>
-    <button type="button" class="category-filter" data-category-filter="calculator">🧮 Калькуляторы</button>
-    <button type="button" class="category-filter" data-category-filter="generator">🔐 Генераторы</button>
-    <button type="button" class="category-filter" data-category-filter="converter">🔄 Конвертеры</button>
-    <button type="button" class="category-filter" data-category-filter="useful">⏱️ Полезные инструменты</button>
-</div>
-<section class="tools">
+<div class="app-layout">
+    <aside class="sidebar" aria-label="Категории инструментов">
+        <div class="sidebar-title">Категории</div>
+        <nav id="categoryFilters">
+            <button type="button" class="category-filter active" data-category-filter="all" aria-pressed="true">⌂ <span>Все инструменты</span></button>
+            <button type="button" class="category-filter" data-category-filter="calculator" aria-pressed="false">🧮 <span>Калькуляторы</span></button>
+            <button type="button" class="category-filter" data-category-filter="generator" aria-pressed="false">🔐 <span>Генераторы</span></button>
+            <button type="button" class="category-filter" data-category-filter="converter" aria-pressed="false">🔄 <span>Конвертеры</span></button>
+            <button type="button" class="category-filter" data-category-filter="useful" aria-pressed="false">⏱️ <span>Полезные инструменты</span></button>
+        </nav>
+    </aside>
+    <div class="tool-content">
+        <div class="search-wrap" style="max-width:560px;margin:0 0 24px;">
+            <label for="toolSearch">🔎 Найти инструмент</label>
+            <input id="toolSearch" type="search" placeholder="Например, пароль, возраст, QR-код..." aria-label="Поиск инструментов">
+        </div>
+        <section class="tools">
 
     <!-- КАЛЬКУЛЯТОР СКИДОК -->
     <div class="tool" data-category="calculator">
@@ -341,7 +371,7 @@ button {
     </div>
 
     <!-- КАЛЬКУЛЯТОР ПРОЦЕНТОВ -->
-    <div class="tool">
+    <div class="tool" data-category="calculator">
         <h3>📊 Калькулятор процентов</h3>
         <p>Узнай, сколько составляет процент от числа.</p>
 
@@ -369,7 +399,7 @@ button {
     </div>
 
     <!-- КАЛЬКУЛЯТОР ПРИБЫЛИ -->
-    <div class="tool">
+    <div class="tool" data-category="calculator">
         <h3>💰 Калькулятор прибыли</h3>
         <p>Рассчитай прибыль и рентабельность.</p>
 
@@ -408,7 +438,7 @@ button {
 
 
     <!-- ГЕНЕРАТОР ПАРОЛЕЙ -->
-    <div class="tool">
+    <div class="tool" data-category="generator">
         <h3>🔐 Генератор паролей</h3>
         <p>Создай случайный пароль для своих аккаунтов.</p>
         <label for="passwordLength">Длина пароля</label>
@@ -432,7 +462,7 @@ button {
     </div>
 
     <!-- КАЛЬКУЛЯТОР ВОЗРАСТА -->
-    <div class="tool">
+    <div class="tool" data-category="calculator">
         <h3>🎂 Калькулятор возраста</h3>
         <p>Узнай, сколько тебе полных лет, месяцев и дней.</p>
         <label for="birthDate">Дата рождения</label>
@@ -442,7 +472,7 @@ button {
     </div>
 
     <!-- ТАЙМЕР И СЕКУНДОМЕР -->
-    <div class="tool">
+    <div class="tool" data-category="useful">
         <h3>⏱️ Таймер и секундомер</h3>
         <p>Установи время или запусти секундомер.</p>
         <label for="timerMinutes">Таймер — минуты</label>
@@ -460,7 +490,7 @@ button {
     </div>
 
     <!-- КОНВЕРТЕР ЕДИНИЦ -->
-    <div class="tool">
+    <div class="tool" data-category="converter">
         <h3>📏 Конвертер единиц</h3>
         <p>Переводи длину, массу и температуру.</p>
         <label for="unitType">Что переводим</label>
@@ -480,6 +510,8 @@ button {
     </div>
 
 </section>
+    </div>
+</div>
 </main>
 
 <footer>
@@ -825,24 +857,8 @@ function countText() {
 </script>
 
 
-<!-- ПОИСК ПО ИНСТРУМЕНТАМ: отдельный обработчик -->
-<script>
-(function () {
-    const search = document.getElementById("toolSearch");
-    if (!search) return;
-    function applyToolSearch() {
-        const query = search.value.trim().toLocaleLowerCase("ru");
-        document.querySelectorAll(".tool").forEach(function (card) {
-            const text = (card.innerText || card.textContent || "").toLocaleLowerCase("ru");
-            card.hidden = query !== "" && !text.includes(query);
-        });
-    }
-    search.addEventListener("input", applyToolSearch);
-    applyToolSearch();
-})();
-</script>
 
-<!-- Фильтрация категорий и поиск -->
+<!-- Поиск и фильтрация категорий -->
 <script>
 (function () {
     const search = document.getElementById("toolSearch");
@@ -853,8 +869,7 @@ function countText() {
         document.querySelectorAll(".tools .tool").forEach(function (card) {
             const categoryMatches = activeCategory === "all" || card.dataset.category === activeCategory;
             const text = (card.innerText || card.textContent || "").toLocaleLowerCase("ru");
-            const queryMatches = !query || text.includes(query);
-            card.hidden = !(categoryMatches && queryMatches);
+            card.hidden = !(categoryMatches && (!query || text.includes(query)));
         });
     }
     buttons.forEach(function (button) {
@@ -872,5 +887,6 @@ function countText() {
     updateVisibleTools();
 })();
 </script>
+
 </body>
 </html>
