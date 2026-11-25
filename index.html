@@ -557,6 +557,49 @@ button {
         <div class="result" id="unitResult" aria-live="polite">Здесь появится результат</div>
     </div>
 
+
+    <!-- КАЛЬКУЛЯТОР ИМТ -->
+    <div class="tool" data-category="calculator">
+        <h3>⚖️ Калькулятор ИМТ</h3>
+        <p>Рассчитай индекс массы тела по росту и весу.</p>
+        <label for="bmiWeight">Вес (кг)</label>
+        <input id="bmiWeight" type="number" min="1" max="500" step="any" placeholder="Например, 70">
+        <label for="bmiHeight">Рост (см)</label>
+        <input id="bmiHeight" type="number" min="50" max="250" step="any" placeholder="Например, 175">
+        <button onclick="calculateBMI()">Рассчитать ИМТ</button>
+        <div class="result" id="bmiResult" aria-live="polite">Здесь появится результат</div>
+        <p class="tool-note">Важно: стандартные категории ИМТ предназначены для взрослых. Для детей и подростков оценка проводится по возрастным нормам.</p>
+    </div>
+
+    <!-- ГЕНЕРАТОР НИКНЕЙМОВ -->
+    <div class="tool" data-category="generator">
+        <h3>🎮 Генератор никнеймов</h3>
+        <p>Придумай случайный ник для игры или соцсетей.</p>
+        <label for="nicknameStyle">Стиль никнейма</label>
+        <select id="nicknameStyle" style="width:100%;padding:12px;margin:7px 0 15px;border:1px solid #405474;border-radius:8px;background:#0b1120;color:white;font-size:16px;">
+            <option value="cool">Крутой</option>
+            <option value="fun">Весёлый</option>
+            <option value="short">Короткий</option>
+        </select>
+        <button onclick="generateNickname()">Создать никнейм</button>
+        <div class="result" id="nicknameResult" aria-live="polite">Твой ник появится здесь</div>
+        <button type="button" onclick="copyNickname()" style="margin-top:10px;">Скопировать ник</button>
+    </div>
+
+    <!-- КАЛЬКУЛЯТОР ЧАЕВЫХ -->
+    <div class="tool" data-category="calculator">
+        <h3>🍽️ Калькулятор чаевых</h3>
+        <p>Рассчитай чаевые и сумму на каждого человека.</p>
+        <label for="tipBill">Сумма счёта (₽)</label>
+        <input id="tipBill" type="number" min="0" step="any" placeholder="Например, 2500">
+        <label for="tipPercent">Чаевые (%)</label>
+        <input id="tipPercent" type="number" min="0" max="100" step="any" value="10">
+        <label for="tipPeople">Количество человек</label>
+        <input id="tipPeople" type="number" min="1" max="100" step="1" value="1">
+        <button onclick="calculateTip()">Рассчитать</button>
+        <div class="result" id="tipResult" aria-live="polite">Здесь появится результат</div>
+    </div>
+
 </section>
     </div>
 </div>
@@ -904,6 +947,80 @@ function countText() {
     document.getElementById("noSpaceCount").textContent = withoutSpaces;
     document.getElementById("wordCount").textContent = words;
 }
+
+    
+// КАЛЬКУЛЯТОР ИМТ (стандартные категории только для взрослых)
+function calculateBMI() {
+    const weight = Number(document.getElementById("bmiWeight").value);
+    const heightCm = Number(document.getElementById("bmiHeight").value);
+    const result = document.getElementById("bmiResult");
+
+    if (!Number.isFinite(weight) || !Number.isFinite(heightCm) || weight <= 0 || heightCm < 50 || heightCm > 250) {
+        result.textContent = "Введи корректный вес и рост.";
+        return;
+    }
+
+    const bmi = weight / Math.pow(heightCm / 100, 2);
+    let category = "";
+    if (bmi < 18.5) category = "ниже стандартного диапазона";
+    else if (bmi < 25) category = "в стандартном диапазоне";
+    else if (bmi < 30) category = "выше стандартного диапазона";
+    else category = "значительно выше стандартного диапазона";
+
+    result.textContent = "ИМТ: " + bmi.toFixed(1).replace(".", ",") + " — " + category + ".";
+}
+
+// ГЕНЕРАТОР НИКНЕЙМОВ
+function generateNickname() {
+    const style = document.getElementById("nicknameStyle").value;
+    const result = document.getElementById("nicknameResult");
+    const lists = {
+        cool: { first: ["Shadow", "Cyber", "Dark", "Storm", "Neon", "Frost", "Turbo"], second: ["Wolf", "Blade", "Nova", "Rider", "Ghost", "Fox", "Spark"] },
+        fun: { first: ["Пончик", "Космо", "Банан", "Пиксель", "Пушистый", "Бодрый"], second: ["Кот", "Енот", "Ниндзя", "Бобёр", "Дракон", "Ёж"] },
+        short: { first: ["Neo", "Fox", "Sky", "Max", "Ray", "Zen"], second: ["X", "Pro", "One", "Go", "YT", "GG"] }
+    };
+    const list = lists[style] || lists.cool;
+    const first = list.first[Math.floor(Math.random() * list.first.length)];
+    const second = list.second[Math.floor(Math.random() * list.second.length)];
+    const number = Math.floor(Math.random() * 900) + 100;
+    result.textContent = first + second + number;
+}
+
+function copyNickname() {
+    const nickname = document.getElementById("nicknameResult").textContent;
+    if (!nickname || nickname === "Твой ник появится здесь") return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(nickname).then(function () {
+            document.getElementById("nicknameResult").textContent = nickname + " — скопировано!";
+        }).catch(function () {
+            document.getElementById("nicknameResult").textContent = nickname + " — не удалось скопировать автоматически.";
+        });
+    } else {
+        document.getElementById("nicknameResult").textContent = nickname + " — копирование недоступно в этом браузере.";
+    }
+}
+
+// КАЛЬКУЛЯТОР ЧАЕВЫХ
+function calculateTip() {
+    const bill = Number(document.getElementById("tipBill").value);
+    const percent = Number(document.getElementById("tipPercent").value);
+    const people = Number(document.getElementById("tipPeople").value);
+    const result = document.getElementById("tipResult");
+
+    if (!Number.isFinite(bill) || !Number.isFinite(percent) || !Number.isInteger(people) ||
+        bill < 0 || percent < 0 || percent > 100 || people < 1 || people > 100 ||
+        document.getElementById("tipBill").value.trim() === "") {
+        result.textContent = "Проверь сумму счёта, чаевые и количество человек.";
+        return;
+    }
+
+    const tip = bill * percent / 100;
+    const total = bill + tip;
+    const format = value => value.toLocaleString("ru-RU", { maximumFractionDigits: 2 }) + " ₽";
+    result.innerHTML = "Чаевые: <strong>" + format(tip) + "</strong><br>Итого: <strong>" + format(total) +
+        "</strong><br>На человека: <strong>" + format(total / people) + "</strong>";
+}
+
 </script>
 
 
