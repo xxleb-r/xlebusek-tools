@@ -145,10 +145,17 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
     margin-top: 15px;
     display: flex;
     justify-content: center;
-    background: white;
+    align-items: center;
+    background: #0b1120;
+    border: 1px solid #263d5d;
     padding: 12px;
     border-radius: 8px;
-    min-height: 20px;
+    min-height: 44px;
+}
+
+#qrOutput.qr-ready {
+    background: #ffffff;
+    border-color: #ffffff;
 }
 
 #qrOutput canvas, #qrOutput img {
@@ -811,6 +818,7 @@ function generateQR() {
     const downloadButton = document.getElementById("qrDownload");
 
     output.innerHTML = "";
+    output.classList.remove("qr-ready");
     currentQR = null;
     downloadButton.style.display = "none";
 
@@ -834,6 +842,7 @@ function generateQR() {
             correctLevel: QRCode.CorrectLevel.H
         });
 
+        output.classList.add("qr-ready");
         message.textContent = "QR-код создан!";
         downloadButton.style.display = "block";
     } catch (error) {
