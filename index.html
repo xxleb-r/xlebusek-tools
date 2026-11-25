@@ -816,5 +816,23 @@ function countText() {
 }
 </script>
 
+
+<!-- ПОИСК ПО ИНСТРУМЕНТАМ: отдельный обработчик -->
+<script>
+(function () {
+    const search = document.getElementById("toolSearch");
+    if (!search) return;
+    function applyToolSearch() {
+        const query = search.value.trim().toLocaleLowerCase("ru");
+        document.querySelectorAll(".tool").forEach(function (card) {
+            const text = (card.innerText || card.textContent || "").toLocaleLowerCase("ru");
+            card.hidden = query !== "" && !text.includes(query);
+        });
+    }
+    search.addEventListener("input", applyToolSearch);
+    applyToolSearch();
+})();
+</script>
+
 </body>
 </html>
