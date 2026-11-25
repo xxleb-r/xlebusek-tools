@@ -1121,6 +1121,10 @@ function calculateTip() {
     let favorites=[];
     try{favorites=JSON.parse(localStorage.getItem(favoritesKey)||"[]");if(!Array.isArray(favorites))favorites=[];}catch(e){favorites=[];}
     function saveFavorites(){try{localStorage.setItem(favoritesKey,JSON.stringify(favorites));}catch(e){}}
+    function sortCards(){cards.slice().sort((a,b)=>{
+        const ai=cards.indexOf(a),bi=cards.indexOf(b);
+        return Number(favorites.includes(bi))-Number(favorites.includes(ai)) || ai-bi;
+    }).forEach(card=>card.parentElement.appendChild(card));}
     cards.forEach((card,index)=>{
         const button=document.createElement("button");
         button.type="button";
@@ -1131,6 +1135,7 @@ function calculateTip() {
             if(favorites.includes(index))favorites=favorites.filter(item=>item!==index);
             else favorites.push(index);
             saveFavorites();
+            sortCards();
             button.classList.toggle("is-favorite",favorites.includes(index));
             button.textContent=favorites.includes(index)?"⭐ В избранном":"☆ В избранное";
             button.setAttribute("aria-pressed",favorites.includes(index)?"true":"false");
@@ -1138,6 +1143,7 @@ function calculateTip() {
         if(favorites.includes(index))button.classList.add("is-favorite");
         card.insertBefore(button,card.firstChild);
     });
+    sortCards();
 
     const themeButton=document.getElementById("themeToggle");
     function applyTheme(theme){
