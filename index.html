@@ -181,17 +181,104 @@ footer {
     border-top: 1px solid #263653;
 }
 
-@media (max-width: 600px) {
-    .welcome h2 {
-        font-size: 27px;
-    }
+/* АДАПТИВНОСТЬ ДЛЯ ПЛАНШЕТОВ И ТЕЛЕФОНОВ */
+.tools > .tool {
+    min-width: 0;
+}
 
+#qrOutput canvas,
+#qrOutput img {
+    display: block;
+    width: min(220px, 100%);
+    height: auto;
+}
+
+button {
+    min-height: 46px;
+    touch-action: manipulation;
+}
+
+@media (max-width: 760px) {
     header {
-        padding: 20px;
+        padding: 22px 5%;
     }
 
     main {
-        margin-top: 30px;
+        margin: 32px auto;
+        padding: 0 16px;
+    }
+
+    .tools {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .tool {
+        padding: 20px;
+    }
+
+    .welcome {
+        margin-bottom: 28px;
+    }
+
+    .welcome h2 {
+        font-size: clamp(25px, 6vw, 32px);
+        line-height: 1.2;
+    }
+
+    input,
+    textarea,
+    button {
+        font-size: 16px;
+    }
+
+    input,
+    textarea {
+        min-height: 46px;
+    }
+
+    footer {
+        margin-top: 35px;
+    }
+}
+
+@media (max-width: 380px) {
+    header {
+        padding: 18px 16px;
+    }
+
+    .logo {
+        font-size: 23px;
+    }
+
+    main {
+        padding: 0 12px;
+    }
+
+    .tool {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .tool h3 {
+        font-size: 18px;
+        line-height: 1.3;
+    }
+
+    .stats {
+        gap: 5px;
+    }
+
+    .stat {
+        padding: 9px 3px;
+    }
+
+    .stat strong {
+        font-size: 18px;
+    }
+
+    .stat span {
+        font-size: 10px;
     }
 }
 </style>
