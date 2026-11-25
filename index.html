@@ -392,6 +392,80 @@ button {
         </div>
     </div>
 
+
+    <!-- ГЕНЕРАТОР ПАРОЛЕЙ -->
+    <div class="tool">
+        <h3>🔐 Генератор паролей</h3>
+        <p>Создай случайный пароль для своих аккаунтов.</p>
+        <label for="passwordLength">Длина пароля</label>
+        <input id="passwordLength" type="number" min="6" max="64" value="16">
+        <label><input id="passwordSymbols" type="checkbox" checked style="width:auto; margin:0 6px 12px 0;"> Использовать символы (!@#$)</label>
+        <button onclick="generatePassword()">Создать пароль</button>
+        <div class="result" id="passwordResult" aria-live="polite">Здесь появится пароль</div>
+        <button onclick="copyPassword()" style="margin-top:10px;">Скопировать пароль</button>
+    </div>
+
+    <!-- КОНВЕРТЕР ВАЛЮТ -->
+    <div class="tool">
+        <h3>💱 Конвертер валют</h3>
+        <p>Пересчитай сумму по курсу, который ты укажешь.</p>
+        <label for="currencyAmount">Сумма</label>
+        <input id="currencyAmount" type="number" min="0" step="any" placeholder="Например, 100">
+        <label for="currencyRate">Курс (сколько рублей за 1 единицу валюты)</label>
+        <input id="currencyRate" type="number" min="0" step="any" placeholder="Например, 90">
+        <button onclick="convertCurrency()">Перевести в рубли</button>
+        <div class="result" id="currencyResult" aria-live="polite">Укажи сумму и курс</div>
+        <p><small>Курс вводится вручную и не обновляется автоматически.</small></p>
+    </div>
+
+    <!-- КАЛЬКУЛЯТОР ВОЗРАСТА -->
+    <div class="tool">
+        <h3>🎂 Калькулятор возраста</h3>
+        <p>Узнай, сколько тебе полных лет, месяцев и дней.</p>
+        <label for="birthDate">Дата рождения</label>
+        <input id="birthDate" type="date">
+        <button onclick="calculateAge()">Рассчитать возраст</button>
+        <div class="result" id="ageResult" aria-live="polite">Выбери дату рождения</div>
+    </div>
+
+    <!-- ТАЙМЕР И СЕКУНДОМЕР -->
+    <div class="tool">
+        <h3>⏱️ Таймер и секундомер</h3>
+        <p>Установи время или запусти секундомер.</p>
+        <label for="timerMinutes">Таймер — минуты</label>
+        <input id="timerMinutes" type="number" min="0" max="999" value="1">
+        <label for="timerSeconds">Секунды</label>
+        <input id="timerSeconds" type="number" min="0" max="59" value="0">
+        <button onclick="startTimer()">Запустить таймер</button>
+        <div class="result" id="timerDisplay" aria-live="polite">00:00</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+            <button onclick="startStopwatch()">Старт секундомера</button>
+            <button onclick="stopStopwatch()">Стоп</button>
+        </div>
+        <div class="result" id="stopwatchDisplay" aria-live="polite">00:00.0</div>
+        <button onclick="resetStopwatch()" style="margin-top:10px;">Сбросить секундомер</button>
+    </div>
+
+    <!-- КОНВЕРТЕР ЕДИНИЦ -->
+    <div class="tool">
+        <h3>📏 Конвертер единиц</h3>
+        <p>Переводи длину, массу и температуру.</p>
+        <label for="unitType">Что переводим</label>
+        <select id="unitType" onchange="updateUnitOptions()" style="width:100%;padding:12px;margin:7px 0 15px;border:1px solid #405474;border-radius:8px;background:#0b1120;color:white;font-size:16px;">
+            <option value="length">Длина</option>
+            <option value="mass">Масса</option>
+            <option value="temperature">Температура</option>
+        </select>
+        <label for="unitValue">Значение</label>
+        <input id="unitValue" type="number" step="any" placeholder="Например, 10">
+        <label for="unitFrom">Из</label>
+        <select id="unitFrom" style="width:100%;padding:12px;margin:7px 0 15px;border:1px solid #405474;border-radius:8px;background:#0b1120;color:white;font-size:16px;"></select>
+        <label for="unitTo">В</label>
+        <select id="unitTo" style="width:100%;padding:12px;margin:7px 0 15px;border:1px solid #405474;border-radius:8px;background:#0b1120;color:white;font-size:16px;"></select>
+        <button onclick="convertUnits()">Перевести</button>
+        <div class="result" id="unitResult" aria-live="polite">Здесь появится результат</div>
+    </div>
+
 </section>
 </main>
 
@@ -400,7 +474,181 @@ button {
 </footer>
 
 <!-- Библиотека для создания QR-кодов -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+
+// ГЕНЕРАТОР ПАРОЛЕЙ
+function generatePassword() {
+    const lengthInput = Number(document.getElementById("passwordLength").value);
+    const length = Math.max(6, Math.min(64, Number.isFinite(lengthInput) ? Math.floor(lengthInput) : 16));
+    const symbols = document.getElementById("passwordSymbols").checked;
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789" + (symbols ? "!@#$%&*?-_+" : "");
+    const values = new Uint32Array(length);
+    if (!window.crypto || !window.crypto.getRandomValues) {
+        document.getElementById("passwordResult").textContent = "Генерация недоступна в этом браузере.";
+        return;
+    }
+    window.crypto.getRandomValues(values);
+    let password = "";
+    for (let i = 0; i < length; i++) password += chars[values[i] % chars.length];
+    document.getElementById("passwordResult").textContent = password;
+}
+function copyPassword() {
+    const password = document.getElementById("passwordResult").textContent;
+    if (!password || password === "Здесь появится пароль") return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(password).then(() => {
+            document.getElementById("passwordResult").textContent = password + " (скопировано)";
+        }).catch(() => {
+            document.getElementById("passwordResult").textContent = "Не удалось скопировать. Выдели пароль вручную.";
+        });
+    } else {
+        document.getElementById("passwordResult").textContent = "Выдели пароль и скопируй вручную.";
+    }
+}
+
+// КОНВЕРТЕР ВАЛЮТ (курс вводится пользователем)
+function convertCurrency() {
+    const amount = getNumber("currencyAmount");
+    const rate = getNumber("currencyRate");
+    const result = document.getElementById("currencyResult");
+    if (amount === null || rate === null || amount < 0 || rate <= 0) {
+        result.textContent = "Введи сумму от 0 и курс больше 0.";
+        return;
+    }
+    result.textContent = money(amount * rate);
+}
+
+// КАЛЬКУЛЯТОР ВОЗРАСТА
+function calculateAge() {
+    const value = document.getElementById("birthDate").value;
+    const result = document.getElementById("ageResult");
+    if (!value) {
+        result.textContent = "Сначала выбери дату рождения.";
+        return;
+    }
+    const parts = value.split("-").map(Number);
+    const birth = new Date(parts[0], parts[1] - 1, parts[2]);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (birth > today) {
+        result.textContent = "Дата рождения не может быть в будущем.";
+        return;
+    }
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+    if (days < 0) {
+        months--;
+        const previousMonthDays = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+        days += previousMonthDays;
+    }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+    result.textContent = years + " лет, " + months + " мес., " + days + " дн.";
+}
+
+// ТАЙМЕР И СЕКУНДОМЕР
+let timerInterval = null;
+let timerRemaining = 0;
+let stopwatchInterval = null;
+let stopwatchStarted = 0;
+let stopwatchElapsed = 0;
+function formatClock(totalSeconds) {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = Math.floor(totalSeconds % 60);
+    return String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+}
+function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    const mins = Number(document.getElementById("timerMinutes").value) || 0;
+    const secs = Number(document.getElementById("timerSeconds").value) || 0;
+    if (mins < 0 || secs < 0 || secs > 59 || mins > 999 || (mins === 0 && secs === 0)) {
+        document.getElementById("timerDisplay").textContent = "Укажи время больше 0.";
+        return;
+    }
+    timerRemaining = Math.floor(mins * 60 + secs);
+    document.getElementById("timerDisplay").textContent = formatClock(timerRemaining);
+    timerInterval = setInterval(() => {
+        timerRemaining--;
+        document.getElementById("timerDisplay").textContent = formatClock(timerRemaining);
+        if (timerRemaining <= 0) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById("timerDisplay").textContent = "Время вышло!";
+            alert("Время вышло!");
+        }
+    }, 1000);
+}
+function startStopwatch() {
+    if (stopwatchInterval) return;
+    stopwatchStarted = Date.now() - stopwatchElapsed;
+    stopwatchInterval = setInterval(() => {
+        stopwatchElapsed = Date.now() - stopwatchStarted;
+        const seconds = stopwatchElapsed / 1000;
+        document.getElementById("stopwatchDisplay").textContent = formatClock(seconds) + "." + Math.floor((stopwatchElapsed % 1000) / 100);
+    }, 100);
+}
+function stopStopwatch() {
+    if (!stopwatchInterval) return;
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
+    stopwatchElapsed = Date.now() - stopwatchStarted;
+}
+function resetStopwatch() {
+    stopStopwatch();
+    stopwatchElapsed = 0;
+    document.getElementById("stopwatchDisplay").textContent = "00:00.0";
+}
+
+// КОНВЕРТЕР ЕДИНИЦ
+const unitDefinitions = {
+    length: { "Метр": 1, "Километр": 1000, "Сантиметр": 0.01, "Миллиметр": 0.001, "Миля": 1609.344, "Фут": 0.3048 },
+    mass: { "Килограмм": 1, "Грамм": 0.001, "Миллиграмм": 0.000001, "Тонна": 1000, "Фунт": 0.45359237 },
+    temperature: { "Цельсий": "c", "Фаренгейт": "f", "Кельвин": "k" }
+};
+function updateUnitOptions() {
+    const type = document.getElementById("unitType").value;
+    const names = Object.keys(unitDefinitions[type]);
+    ["unitFrom", "unitTo"].forEach((id, index) => {
+        const select = document.getElementById(id);
+        select.innerHTML = "";
+        names.forEach((name, i) => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            if ((index === 0 && i === 0) || (index === 1 && i === 1)) option.selected = true;
+            select.appendChild(option);
+        });
+    });
+}
+function convertUnits() {
+    const type = document.getElementById("unitType").value;
+    const value = getNumber("unitValue");
+    const from = document.getElementById("unitFrom").value;
+    const to = document.getElementById("unitTo").value;
+    const result = document.getElementById("unitResult");
+    if (value === null) {
+        result.textContent = "Введи число для перевода.";
+        return;
+    }
+    let answer;
+    if (type === "temperature") {
+        let celsius = value;
+        if (from === "Фаренгейт") celsius = (value - 32) * 5 / 9;
+        if (from === "Кельвин") celsius = value - 273.15;
+        answer = celsius;
+        if (to === "Фаренгейт") answer = celsius * 9 / 5 + 32;
+        if (to === "Кельвин") answer = celsius + 273.15;
+    } else {
+        answer = value * unitDefinitions[type][from] / unitDefinitions[type][to];
+    }
+    result.textContent = value + " " + from.toLowerCase() + " = " + Number(answer.toFixed(6)).toLocaleString("ru-RU") + " " + to.toLowerCase();
+}
+updateUnitOptions();
+
+</script>
 
 <script>
 function getNumber(id) {
