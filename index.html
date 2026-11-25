@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="XLEBUSEK TOOLS — бесплатные онлайн-инструменты: калькуляторы, генератор QR-кодов и счётчик текста.">
+<meta name="theme-color" content="#0b1120">
+<title>XLEBUSEK TOOLS — Бесплатные онлайн-инструменты</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b1120;
+    color: #fff;
+}
+
+header {
+    padding: 24px 7%;
+    background: #111c33;
+    border-bottom: 1px solid #263653;
+}
+
+.logo {
+    margin: 0;
+    color: #38a5ff;
+    font-size: 27px;
+}
+
+header p {
+    margin-bottom: 0;
+    color: #a9bad3;
+}
+
+main {
+    max-width: 1150px;
+    margin: 45px auto;
+    padding: 0 20px;
+}
+
+.welcome {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.welcome h2 {
+    font-size: 36px;
+}
+
+.welcome p {
+    color: #a9bad3;
+}
+
+.tools {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.tool {
+    background: #14213b;
+    border: 1px solid #263653;
+    border-radius: 15px;
+    padding: 24px;
+}
+
+.tool h3 {
+    color: #38a5ff;
+    margin-top: 0;
+}
+
+.tool p {
+    color: #a9bad3;
+    line-height: 1.5;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0 15px;
+    border: 1px solid #405474;
+    border-radius: 8px;
+    background: #0b1120;
+    color: white;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 115px;
+    resize: vertical;
+}
+
+label {
+    color: #d7e3f5;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #1689ed;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #0874d0;
+}
+
+button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid #70c2ff;
+    outline-offset: 2px;
+}
+
+.result {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #0b1120;
+    color: #70c2ff;
+    overflow-wrap: anywhere;
+    min-height: 42px;
+}
+
+#qrOutput {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    min-height: 20px;
+}
+
+#qrOutput canvas, #qrOutput img {
+    max-width: 100%;
+    height: auto;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.stat {
+    padding: 10px 5px;
+    text-align: center;
+    background: #0b1120;
+    border-radius: 8px;
+    color: #70c2ff;
+}
+
+.stat strong {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.stat span {
+    font-size: 11px;
+    color: #a9bad3;
+}
+
+footer {
+    text-align: center;
+    padding: 30px 15px;
+    margin-top: 50px;
+    color: #7185a5;
+    border-top: 1px solid #263653;
+}
+
+@media (max-width: 600px) {
+    .welcome h2 {
+        font-size: 27px;
+    }
+
+    header {
+        padding: 20px;
+    }
+
+    main {
+        margin-top: 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1 class="logo">XLEBUSEK TOOLS</h1>
+    <p>Бесплатные онлайн-инструменты</p>
+</header>
+
+<main>
+
+<section class="welcome">
+    <h2>Полезные инструменты в одном месте</h2>
+    <p>Быстро, просто и бесплатно.</p>
+</section>
+
+<section class="tools">
+
+    <!-- КАЛЬКУЛЯТОР СКИДОК -->
+    <div class="tool">
+        <h3>🏷️ Калькулятор скидок</h3>
+        <p>Рассчитай стоимость товара после скидки.</p>
+
+        <label for="discountPrice">Цена товара (₽)</label>
+        <input id="discountPrice" type="number" min="0" step="any" placeholder="Например, 5000">
+
+        <label for="discountPercent">Скидка (%)</label>
+        <input id="discountPercent" type="number" min="0" max="100" step="any" placeholder="Например, 20">
+
+        <button onclick="calculateDiscount()">Рассчитать скидку</button>
+        <div class="result" id="discountResult" aria-live="polite">Здесь появится результат</div>
+    </div>
+
+    <!-- КАЛЬКУЛЯТОР ПРОЦЕНТОВ -->
+    <div class="tool">
+        <h3>📊 Калькулятор процентов</h3>
+        <p>Узнай, сколько составляет процент от числа.</p>
+
+        <label for="percentNumber">Число</label>
+        <input id="percentNumber" type="number" step="any" placeholder="Например, 1000">
+
+        <label for="percentValue">Процент (%)</label>
+        <input id="percentValue" type="number" step="any" placeholder="Например, 15">
+
+        <button onclick="calculatePercent()">Рассчитать</button>
+        <div class="result" id="percentResult" aria-live="polite">Здесь появится результат</div>
+    </div>
+
+    <!-- ГЕНЕРАТОР QR -->
+    <div class="tool">
+        <h3>🔳 Генератор QR-кодов</h3>
+        <p>Создай QR-код для ссылки или текста.</p>
+
+        <label for="qrText">Текст или ссылка</label>
+        <input id="qrText" type="text" maxlength="1500" placeholder="Вставь ссылку или текст">
+
+        <button onclick="generateQR()">Создать QR-код</button>
+        <div id="qrOutput" aria-live="polite"></div>
+        <div id="qrMessage" class="result">QR-код появится здесь</div>
+        <button id="qrDownload" onclick="downloadQR()" style="display:none; margin-top:10px;">Скачать QR-код</button>
+    </div>
+
+    <!-- КАЛЬКУЛЯТОР ПРИБЫЛИ -->
+    <div class="tool">
+        <h3>💰 Калькулятор прибыли</h3>
+        <p>Рассчитай прибыль и рентабельность.</p>
+
+        <label for="revenue">Выручка (₽)</label>
+        <input id="revenue" type="number" min="0" step="any" placeholder="Например, 10000">
+
+        <label for="expenses">Расходы (₽)</label>
+        <input id="expenses" type="number" min="0" step="any" placeholder="Например, 6000">
+
+        <button onclick="calculateProfit()">Рассчитать прибыль</button>
+        <div class="result" id="profitResult" aria-live="polite">Здесь появится результат</div>
+    </div>
+
+    <!-- СЧЁТЧИК ТЕКСТА -->
+    <div class="tool">
+        <h3>📝 Счётчик текста</h3>
+        <p>Считай слова, символы и символы без пробелов.</p>
+
+        <label for="textInput">Вставь свой текст</label>
+        <textarea id="textInput" placeholder="Начни вводить текст..." oninput="countText()"></textarea>
+
+        <div class="stats">
+            <div class="stat">
+                <strong id="charCount">0</strong>
+                <span>Символов</span>
+            </div>
+            <div class="stat">
+                <strong id="noSpaceCount">0</strong>
+                <span>Без пробелов</span>
+            </div>
+            <div class="stat">
+                <strong id="wordCount">0</strong>
+                <span>Слов</span>
+            </div>
+        </div>
+    </div>
+
+</section>
+</main>
+
+<footer>
+    © 2026 XLEBUSEK TOOLS. Все права защищены.
+</footer>
+
+<!-- Библиотека для создания QR-кодов -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+function getNumber(id) {
+    const value = document.getElementById(id).value.trim();
+
+    if (value === "") return null;
+
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) return null;
+
+    return number;
+}
+
+function money(value) {
+    return value.toLocaleString("ru-RU", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }) + " ₽";
+}
+
+// КАЛЬКУЛЯТОР СКИДОК
+function calculateDiscount() {
+    const price = getNumber("discountPrice");
+    const discount = getNumber("discountPercent");
+    const result = document.getElementById("discountResult");
+
+    if (price === null || discount === null || price < 0 || discount < 0 || discount > 100) {
+        result.textContent = "Проверь цену и скидку (от 0 до 100%).";
+        return;
+    }
+
+    const saving = price * discount / 100;
+    const finalPrice = price - saving;
+
+    result.innerHTML =
+        "Цена после скидки: <strong>" + money(finalPrice) +
+        "</strong><br>Экономия: " + money(saving);
+}
+
+// КАЛЬКУЛЯТОР ПРОЦЕНТОВ
+function calculatePercent() {
+    const number = getNumber("percentNumber");
+    const percent = getNumber("percentValue");
+    const result = document.getElementById("percentResult");
+
+    if (number === null || percent === null) {
+        result.textContent = "Заполни оба поля.";
+        return;
+    }
+
+    const answer = number * percent / 100;
+
+    result.textContent = percent + "% от " + number + " = " + answer.toLocaleString("ru-RU");
+}
+
+// ГЕНЕРАТОР QR-КОДОВ
+let currentQR = null;
+
+function generateQR() {
+    const text = document.getElementById("qrText").value.trim();
+    const output = document.getElementById("qrOutput");
+    const message = document.getElementById("qrMessage");
+    const downloadButton = document.getElementById("qrDownload");
+
+    output.innerHTML = "";
+    currentQR = null;
+    downloadButton.style.display = "none";
+
+    if (!text) {
+        message.textContent = "Сначала введи текст или ссылку.";
+        return;
+    }
+
+    if (typeof QRCode === "undefined") {
+        message.textContent = "Не удалось загрузить генератор. Проверь интернет и обнови страницу.";
+        return;
+    }
+
+    try {
+        currentQR = new QRCode(output, {
+            text: text,
+            width: 220,
+            height: 220,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        message.textContent = "QR-код создан!";
+        downloadButton.style.display = "block";
+    } catch (error) {
+        message.textContent = "Не удалось создать QR-код. Проверь введённый текст.";
+    }
+}
+
+function downloadQR() {
+    const output = document.getElementById("qrOutput");
+    const canvas = output.querySelector("canvas");
+    const image = output.querySelector("img");
+
+    let url = "";
+
+    if (canvas) {
+        url = canvas.toDataURL("image/png");
+    } else if (image) {
+        url = image.src;
+    }
+
+    if (!url) return;
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "xlebusek-qr.png";
+    link.click();
+}
+
+// КАЛЬКУЛЯТОР ПРИБЫЛИ
+function calculateProfit() {
+    const revenue = getNumber("revenue");
+    const expenses = getNumber("expenses");
+    const result = document.getElementById("profitResult");
+
+    if (revenue === null || expenses === null || revenue < 0 || expenses < 0) {
+        result.textContent = "Введи корректные неотрицательные суммы.";
+        return;
+    }
+
+    const profit = revenue - expenses;
+    const margin = revenue > 0 ? profit / revenue * 100 : null;
+
+    result.innerHTML =
+        (profit >= 0 ? "Прибыль: " : "Убыток: ") +
+        "<strong>" + money(profit) + "</strong>" +
+        (margin === null ? "" : "<br>Рентабельность по выручке: " + margin.toFixed(2) + "%");
+}
+
+// СЧЁТЧИК ТЕКСТА
+function countText() {
+    const text = document.getElementById("textInput").value;
+
+    const characters = text.length;
+    const withoutSpaces = text.replace(/\s/g, "").length;
+    const trimmed = text.trim();
+    const words = trimmed ? trimmed.split(/\s+/).length : 0;
+
+    document.getElementById("charCount").textContent = characters;
+    document.getElementById("noSpaceCount").textContent = withoutSpaces;
+    document.getElementById("wordCount").textContent = words;
+}
+</script>
+
+</body>
+</html>
