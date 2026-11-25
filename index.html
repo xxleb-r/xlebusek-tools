@@ -307,6 +307,11 @@ button {
     <p>Быстро, просто и бесплатно.</p>
 </section>
 
+<div style="max-width:560px;margin:0 auto 24px;">
+    <label for="toolSearch">🔎 Найти инструмент</label>
+    <input id="toolSearch" type="search" placeholder="Например, пароль, возраст, QR-код..." oninput="filterTools()" aria-label="Поиск инструментов">
+</div>
+
 <section class="tools">
 
     <!-- КАЛЬКУЛЯТОР СКИДОК -->
@@ -475,6 +480,14 @@ button {
 
 <!-- Библиотека для создания QR-кодов -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+
+// ПОИСК ПО ИНСТРУМЕНТАМ
+function filterTools() {
+    const query = document.getElementById("toolSearch").value.trim().toLocaleLowerCase("ru");
+    document.querySelectorAll(".tools .tool").forEach(card => {
+        card.style.display = card.textContent.toLocaleLowerCase("ru").includes(query) ? "" : "none";
+    });
+}
 
 // ГЕНЕРАТОР ПАРОЛЕЙ
 function generatePassword() {
