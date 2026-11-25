@@ -311,6 +311,52 @@ button {
 }
 @media(max-width:390px){#categoryFilters{grid-template-columns:1fr}}
 
+
+/* Обновлённый дизайн карточек инструментов */
+.tools{align-items:stretch;gap:18px}
+.tools>.tool{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    min-height:100%;
+    padding:25px;
+    overflow:hidden;
+    background:linear-gradient(145deg,#172844 0%,#111d33 100%);
+    border:1px solid #2b4162;
+    border-radius:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.16);
+    transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.tools>.tool::before{
+    content:"";
+    position:absolute;
+    top:0;left:22px;right:22px;
+    height:2px;
+    border-radius:0 0 4px 4px;
+    background:linear-gradient(90deg,#1689ed,#70c2ff);
+    opacity:.7;
+}
+.tools>.tool:hover{
+    transform:translateY(-4px);
+    border-color:#3979b5;
+    box-shadow:0 14px 30px rgba(0,0,0,.25);
+}
+.tools>.tool h3{
+    margin:3px 0 12px;
+    color:#70c2ff;
+    font-size:19px;
+    line-height:1.35;
+}
+.tools>.tool p{line-height:1.6}
+.tools>.tool .result{
+    border:1px solid #263d5d;
+    background:rgba(7,15,29,.72);
+}
+@media(max-width:760px){
+    .tools>.tool{padding:22px;border-radius:16px}
+    .tools>.tool:hover{transform:none}
+}
+
 </style>
 <style>
 .category-filter{background:#172642;color:#dceaff;border:1px solid #304767;border-radius:20px;padding:10px 16px;cursor:pointer;font-size:14px}
