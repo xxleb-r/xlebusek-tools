@@ -971,6 +971,8 @@ function calculateBMI() {
 }
 
 // ГЕНЕРАТОР НИКНЕЙМОВ
+let currentNickname = "";
+
 function generateNickname() {
     const style = document.getElementById("nicknameStyle").value;
     const result = document.getElementById("nicknameResult");
@@ -983,12 +985,13 @@ function generateNickname() {
     const first = list.first[Math.floor(Math.random() * list.first.length)];
     const second = list.second[Math.floor(Math.random() * list.second.length)];
     const number = Math.floor(Math.random() * 900) + 100;
-    result.textContent = first + second + number;
+    currentNickname = first + second + number;
+    result.textContent = currentNickname;
 }
 
 function copyNickname() {
-    const nickname = document.getElementById("nicknameResult").textContent;
-    if (!nickname || nickname === "Твой ник появится здесь") return;
+    const nickname = currentNickname;
+    if (!nickname) return;
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(nickname).then(function () {
             document.getElementById("nicknameResult").textContent = nickname + " — скопировано!";
