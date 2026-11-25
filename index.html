@@ -291,6 +291,11 @@ button {
     }
 }
 </style>
+<style>
+.category-filter{background:#172642;color:#dceaff;border:1px solid #304767;border-radius:20px;padding:10px 16px;cursor:pointer;font-size:14px}
+.category-filter.active{background:#1688ee;color:#fff;border-color:#1688ee}
+.tool[hidden]{display:none!important}
+</style>
 </head>
 
 <body>
@@ -312,11 +317,17 @@ button {
     <input id="toolSearch" type="search" placeholder="Например, пароль, возраст, QR-код..." oninput="filterTools()" aria-label="Поиск инструментов">
 </div>
 
+<div id="categoryFilters" style="max-width:900px;margin:0 auto 22px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+    <button type="button" class="category-filter active" data-category-filter="all">Все инструменты</button>
+    <button type="button" class="category-filter" data-category-filter="calculator">🧮 Калькуляторы</button>
+    <button type="button" class="category-filter" data-category-filter="generator">🔐 Генераторы</button>
+    <button type="button" class="category-filter" data-category-filter="converter">🔄 Конвертеры</button>
+    <button type="button" class="category-filter" data-category-filter="useful">⏱️ Полезные инструменты</button>
+</div>
 <section class="tools">
 
     <!-- КАЛЬКУЛЯТОР СКИДОК -->
-    <div class="tool">
-        <h3>🏷️ Калькулятор скидок</h3>
+    <div class="tool" data-category="calculator">
         <p>Рассчитай стоимость товара после скидки.</p>
 
         <label for="discountPrice">Цена товара (₽)</label>
@@ -345,8 +356,7 @@ button {
     </div>
 
     <!-- ГЕНЕРАТОР QR -->
-    <div class="tool">
-        <h3>🔳 Генератор QR-кодов</h3>
+    <div class="tool" data-category="generator">
         <p>Создай QR-код для ссылки или текста.</p>
 
         <label for="qrText">Текст или ссылка</label>
@@ -374,8 +384,7 @@ button {
     </div>
 
     <!-- СЧЁТЧИК ТЕКСТА -->
-    <div class="tool">
-        <h3>📝 Счётчик текста</h3>
+    <div class="tool" data-category="useful">
         <p>Считай слова, символы и символы без пробелов.</p>
 
         <label for="textInput">Вставь свой текст</label>
@@ -411,8 +420,7 @@ button {
     </div>
 
     <!-- КОНВЕРТЕР ВАЛЮТ -->
-    <div class="tool">
-        <h3>💱 Конвертер валют</h3>
+    <div class="tool" data-category="converter">
         <p>Пересчитай сумму по курсу, который ты укажешь.</p>
         <label for="currencyAmount">Сумма</label>
         <input id="currencyAmount" type="number" min="0" step="any" placeholder="Например, 100">
@@ -834,5 +842,35 @@ function countText() {
 })();
 </script>
 
+<!-- Фильтрация категорий и поиск -->
+<script>
+(function () {
+    const search = document.getElementById("toolSearch");
+    const buttons = document.querySelectorAll("[data-category-filter]");
+    let activeCategory = "all";
+    function updateVisibleTools() {
+        const query = search ? search.value.trim().toLocaleLowerCase("ru") : "";
+        document.querySelectorAll(".tools .tool").forEach(function (card) {
+            const categoryMatches = activeCategory === "all" || card.dataset.category === activeCategory;
+            const text = (card.innerText || card.textContent || "").toLocaleLowerCase("ru");
+            const queryMatches = !query || text.includes(query);
+            card.hidden = !(categoryMatches && queryMatches);
+        });
+    }
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            activeCategory = button.dataset.categoryFilter;
+            buttons.forEach(function (item) {
+                const selected = item === button;
+                item.classList.toggle("active", selected);
+                item.setAttribute("aria-pressed", selected ? "true" : "false");
+            });
+            updateVisibleTools();
+        });
+    });
+    if (search) search.addEventListener("input", updateVisibleTools);
+    updateVisibleTools();
+})();
+</script>
 </body>
 </html>
