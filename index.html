@@ -364,6 +364,35 @@ button {
     .tools>.tool:hover{transform:none}
 }
 
+
+/* Дополнительные функции: тема, избранное, популярное и счётчик */
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.theme-toggle{width:auto;min-height:42px;padding:10px 15px;white-space:nowrap}
+.popular-section{margin:0 0 28px;padding:20px;background:#111c33;border:1px solid #263653;border-radius:16px}
+.popular-section h2{margin:0 0 7px;color:#70c2ff;font-size:21px}
+.popular-section>p{margin:0 0 14px;color:#a9bad3}
+.popular-links{display:flex;flex-wrap:wrap;gap:10px}
+.popular-links a{display:inline-flex;align-items:center;padding:10px 13px;border:1px solid #2b4162;border-radius:10px;background:#172844;color:#d7eaff;text-decoration:none;font-size:14px}
+.popular-links a:hover{border-color:#3979b5;background:#1a3150}
+.favorite-toggle{width:auto;align-self:flex-end;min-height:36px;margin:-5px 0 12px;padding:7px 11px;background:#203653;border:1px solid #385477;color:#d7eaff;font-size:13px}
+.favorite-toggle:hover,.favorite-toggle.is-favorite{background:#493b18;border-color:#a9822b;color:#ffe08a}
+.visit-counter{color:#a9bad3;font-size:13px}
+body.light-theme{background:#f2f6fc;color:#17243a}
+body.light-theme header,body.light-theme .sidebar,body.light-theme .popular-section{background:#fff;border-color:#d6e0ee}
+body.light-theme header p,body.light-theme .welcome p,body.light-theme .popular-section>p,body.light-theme .sidebar-title{color:#52647d}
+body.light-theme .logo,body.light-theme .tool h3,body.light-theme .popular-section h2{color:#0874d0}
+body.light-theme .tool,body.light-theme .tools>.tool{background:linear-gradient(145deg,#fff,#f7faff);border-color:#d6e0ee;box-shadow:0 7px 20px rgba(27,55,90,.08)}
+body.light-theme .tool p,body.light-theme label{color:#52647d}
+body.light-theme input,body.light-theme textarea,body.light-theme .result,body.light-theme .stat,body.light-theme select{background:#f4f7fc;color:#17243a;border-color:#c8d5e6}
+body.light-theme .result{color:#075da8}
+body.light-theme .category-filter{color:#334963}
+body.light-theme .category-filter:hover{background:#edf4fc}
+body.light-theme .category-filter.active{background:#e2f1ff;border-color:#9acdf5;color:#075da8}
+body.light-theme .popular-links a{background:#f4f8fd;border-color:#d6e0ee;color:#17446d}
+body.light-theme footer{border-color:#d6e0ee;color:#65758b}
+body.light-theme .favorite-toggle{background:#edf3fb;color:#334963;border-color:#c8d5e6}
+@media(max-width:600px){.header-inner{align-items:flex-start;flex-direction:column}.theme-toggle{width:100%}.popular-section{padding:16px}.popular-links{flex-direction:column}.popular-links a{width:100%}}
+
 </style>
 <style>
 .category-filter{background:#172642;color:#dceaff;border:1px solid #304767;border-radius:20px;padding:10px 16px;cursor:pointer;font-size:14px}
@@ -375,8 +404,13 @@ button {
 <body>
 
 <header>
-    <h1 class="logo">XLEBUSEK TOOLS</h1>
-    <p>Бесплатные онлайн-инструменты</p>
+    <div class="header-inner">
+        <div>
+            <h1 class="logo">XLEBUSEK TOOLS</h1>
+            <p>Бесплатные онлайн-инструменты</p>
+        </div>
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Переключить тему">☀️ Светлая тема</button>
+    </div>
 </header>
 
 <main>
@@ -384,6 +418,16 @@ button {
 <section class="welcome">
     <h2>Полезные инструменты в одном месте</h2>
     <p>Быстро, просто и бесплатно.</p>
+</section>
+
+<section class="popular-section">
+    <h2>⭐ Популярные инструменты</h2>
+    <p>Быстрый доступ к полезным инструментам</p>
+    <div class="popular-links">
+        <a href="#tool-discount">🧮 Калькулятор скидок</a>
+        <a href="#tool-percent">📊 Калькулятор процентов</a>
+        <a href="#tool-qr">🔳 Генератор QR-кодов</a>
+    </div>
 </section>
 
 <div class="app-layout">
@@ -606,7 +650,8 @@ button {
 </main>
 
 <footer>
-    © 2026 XLEBUSEK TOOLS. Все права защищены.
+    <div id="visitCounter" class="visit-counter" aria-live="polite"></div>
+    <p>© 2026 XLEBUSEK TOOLS. Все права защищены.</p>
 </footer>
 
 <!-- Библиотека для создания QR-кодов -->
@@ -1055,6 +1100,63 @@ function calculateTip() {
     });
     if (search) search.addEventListener("input", updateVisibleTools);
     updateVisibleTools();
+})();
+</script>
+
+
+<!-- Избранное, темы, популярное и локальный счётчик -->
+<script>
+(function(){
+    const cards=Array.from(document.querySelectorAll(".tools .tool"));
+    const favoritesKey="xlebusek-favorites-v1";
+    const themeKey="xlebusek-theme-v1";
+    const visitKey="xlebusek-local-visits-v1";
+    const titles=cards.map(card=>{
+        const heading=card.querySelector("h3");
+        return heading ? heading.textContent.trim() : (card.querySelector("p")?.textContent.trim() || "Инструмент");
+    });
+    const ids=["tool-discount","tool-percent","tool-qr"];
+    ids.forEach((id,index)=>{if(cards[index]) cards[index].id=id;});
+
+    let favorites=[];
+    try{favorites=JSON.parse(localStorage.getItem(favoritesKey)||"[]");if(!Array.isArray(favorites))favorites=[];}catch(e){favorites=[];}
+    function saveFavorites(){try{localStorage.setItem(favoritesKey,JSON.stringify(favorites));}catch(e){}}
+    cards.forEach((card,index)=>{
+        const button=document.createElement("button");
+        button.type="button";
+        button.className="favorite-toggle";
+        button.setAttribute("aria-pressed",favorites.includes(index)?"true":"false");
+        button.textContent=favorites.includes(index)?"⭐ В избранном":"☆ В избранное";
+        button.addEventListener("click",()=>{
+            if(favorites.includes(index))favorites=favorites.filter(item=>item!==index);
+            else favorites.push(index);
+            saveFavorites();
+            button.classList.toggle("is-favorite",favorites.includes(index));
+            button.textContent=favorites.includes(index)?"⭐ В избранном":"☆ В избранное";
+            button.setAttribute("aria-pressed",favorites.includes(index)?"true":"false");
+        });
+        if(favorites.includes(index))button.classList.add("is-favorite");
+        card.insertBefore(button,card.firstChild);
+    });
+
+    const themeButton=document.getElementById("themeToggle");
+    function applyTheme(theme){
+        document.body.classList.toggle("light-theme",theme==="light");
+        themeButton.textContent=theme==="light"?"🌙 Тёмная тема":"☀️ Светлая тема";
+        themeButton.setAttribute("aria-label",theme==="light"?"Включить тёмную тему":"Включить светлую тему");
+    }
+    let theme="dark";
+    try{theme=localStorage.getItem(themeKey)||"dark";}catch(e){}
+    applyTheme(theme);
+    themeButton.addEventListener("click",()=>{
+        theme=document.body.classList.contains("light-theme")?"dark":"light";
+        applyTheme(theme);
+        try{localStorage.setItem(themeKey,theme);}catch(e){}
+    });
+
+    let visits=1;
+    try{visits=Number(localStorage.getItem(visitKey)||"0")+1;localStorage.setItem(visitKey,String(visits));}catch(e){}
+    document.getElementById("visitCounter").textContent="Запусков сайта на этом устройстве: "+visits+" (счётчик хранится только в этом браузере)";
 })();
 </script>
 
