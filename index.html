@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="16 бесплатных онлайн-инструментов XLEBUSEK TOOLS: калькуляторы, генераторы QR-кодов и паролей, конвертеры, таймер, счётчик текста и многое другое. Без регистрации.">
+<meta name="description" content="24 бесплатных онлайн-инструментов XLEBUSEK TOOLS: калькуляторы, генераторы QR-кодов и паролей, конвертеры, таймер, счётчик текста и многое другое. Без регистрации.">
 <meta name="keywords" content="бесплатные онлайн инструменты, онлайн калькуляторы, калькулятор скидок, калькулятор процентов, калькулятор прибыли, генератор QR кодов, генератор паролей, конвертер единиц, счётчик текста, таймер онлайн">
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="LfCdpJ6_4gz814hAQ41MQb5QDbyZja53LDzyOVtp4P4" />
@@ -12,10 +12,10 @@
 <link rel="canonical" href="https://xxleb-r.github.io/xlebusek-tools/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="XLEBUSEK TOOLS — бесплатные онлайн-инструменты">
-<meta property="og:description" content="16 бесплатных онлайн-инструментов: калькуляторы, генераторы, конвертеры, таймер и другие полезные сервисы. Без регистрации.">
+<meta property="og:description" content="24 бесплатных онлайн-инструментов: калькуляторы, генераторы, конвертеры, таймер и другие полезные сервисы. Без регистрации.">
 <meta property="og:url" content="https://xxleb-r.github.io/xlebusek-tools/">
 <meta name="twitter:card" content="summary">
-<title>XLEBUSEK TOOLS — 16 бесплатных онлайн-инструментов</title>
+<title>XLEBUSEK TOOLS — 24 бесплатных онлайн-инструментов</title>
 
 <style>
 * {
@@ -472,7 +472,7 @@ body.light-theme .seo-categories p{color:#52647d}
 
 <section class="welcome">
     <h2>Бесплатные онлайн-калькуляторы и инструменты</h2>
-    <p>16 полезных сервисов для расчётов, конвертации и повседневных задач. Работают на телефоне и компьютере — без регистрации.</p>
+    <p>24 полезных сервисов для расчётов, конвертации и повседневных задач. Работают на телефоне и компьютере — без регистрации.</p>
 </section>
 
 <section class="popular-section">
@@ -726,6 +726,17 @@ body.light-theme .seo-categories p{color:#52647d}
         <label for="teamCount">Количество команд</label><input id="teamCount" type="number" min="2" max="20" value="2">
         <button onclick="generateTeams()">Разделить на команды</button><div class="result" id="teamsResult" aria-live="polite">Здесь появятся команды</div>
     </div>
+
+<div class="tool" data-category="calculator"><h3>💳 Калькулятор кредита</h3><p>Оценка ежемесячного аннуитетного платежа.</p><label for="loanAmount">Сумма кредита (₽)</label><input id="loanAmount" type="number" min="0" placeholder="500000"><label for="loanRate">Годовая ставка (%)</label><input id="loanRate" type="number" min="0" max="1000" step="any" placeholder="12"><label for="loanMonths">Срок (месяцев)</label><input id="loanMonths" type="number" min="1" max="1200" placeholder="36"><button type="button" onclick="calcLoan()">Рассчитать</button><div class="result" id="loanResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="calculator"><h3>📈 Калькулятор сложного процента</h3><p>Расчёт роста суммы с начислением процентов на проценты.</p><label for="compoundStart">Начальная сумма (₽)</label><input id="compoundStart" type="number" min="0" placeholder="10000"><label for="compoundRate">Ставка за период (%)</label><input id="compoundRate" type="number" min="0" max="1000" step="any" placeholder="5"><label for="compoundPeriods">Количество периодов</label><input id="compoundPeriods" type="number" min="0" max="10000" placeholder="12"><button type="button" onclick="calcCompound()">Рассчитать</button><div class="result" id="compoundResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="calculator"><h3>🧾 Калькулятор НДС</h3><p>Добавь НДС к сумме или выдели его из суммы.</p><label for="vatAmount">Сумма (₽)</label><input id="vatAmount" type="number" min="0" step="any" placeholder="10000"><label for="vatRate">Ставка НДС (%)</label><input id="vatRate" type="number" min="0" max="100" step="any" value="20"><label for="vatMode">Операция</label><select id="vatMode"><option value="add">Добавить НДС</option><option value="extract">Выделить НДС</option></select><button type="button" onclick="calcVAT()">Рассчитать</button><div class="result" id="vatResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="calculator"><h3>🛒 Цена за единицу</h3><p>Узнай стоимость 1 кг, литра или штуки.</p><label for="unitPrice">Цена упаковки (₽)</label><input id="unitPrice" type="number" min="0" step="any" placeholder="250"><label for="unitQuantity">Количество в упаковке</label><input id="unitQuantity" type="number" min="0" step="any" placeholder="0.5"><label for="unitName">Единица измерения</label><input id="unitName" type="text" maxlength="20" value="кг"><button type="button" onclick="calcUnitPrice()">Рассчитать</button><div class="result" id="unitPriceResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="calculator"><h3>➗ Калькулятор среднего</h3><p>Найди среднее арифметическое набора чисел.</p><label for="averageValues">Числа через пробел или запятую</label><textarea id="averageValues" placeholder="5, 10, 15, 20"></textarea><button type="button" onclick="calcAverage()">Найти среднее</button><div class="result" id="averageResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="useful"><h3>📅 Калькулятор разницы дат</h3><p>Посчитай количество дней между двумя датами.</p><label for="dateStart">Начальная дата</label><input id="dateStart" type="date"><label for="dateEnd">Конечная дата</label><input id="dateEnd" type="date"><button type="button" onclick="calcDateDiff()">Рассчитать</button><div class="result" id="dateDiffResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="useful"><h3>🔤 Изменение регистра текста</h3><p>Преобразуй текст в верхний, нижний или заглавный регистр.</p><label for="caseText">Текст</label><textarea id="caseText" placeholder="Вставь текст"></textarea><button type="button" onclick="changeCase('upper')">В ВЕРХНИЙ РЕГИСТР</button><button type="button" style="margin-top:8px" onclick="changeCase('lower')">в нижний регистр</button><button type="button" style="margin-top:8px" onclick="changeCase('title')">Каждое Слово С Заглавной</button><div class="result" id="caseResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="useful"><h3>🧹 Очистка и сортировка списка</h3><p>Удаляй повторы или сортируй строки по алфавиту.</p><label for="listText">Каждый элемент с новой строки</label><textarea id="listText" placeholder="Яблоко&#10;Банан&#10;Яблоко"></textarea><button type="button" onclick="processList('unique')">Удалить повторы</button><button type="button" style="margin-top:8px" onclick="processList('sort')">Сортировать</button><div class="result" id="listResult" aria-live="polite">Здесь появится результат</div></div>
+<div class="tool" data-category="useful"><h3>🧩 Форматировщик JSON</h3><p>Проверь JSON и приведи его к читаемому виду.</p><label for="jsonInput">JSON-код</label><textarea id="jsonInput" placeholder='{"name":"XLEBUSEK","active":true}'></textarea><button type="button" onclick="formatJSON()">Форматировать JSON</button><div class="result" id="jsonResult" aria-live="polite">Здесь появится результат</div></div>
+
 
 </section>
     </div>
@@ -1288,6 +1299,20 @@ function escapeTeamName(value){return value.replace(/[&<>"']/g,c=>({"&":"&amp;",
     try{visits=Number(localStorage.getItem(visitKey)||"0")+1;localStorage.setItem(visitKey,String(visits));}catch(e){}
     document.getElementById("visitCounter").textContent="Запусков сайта на этом устройстве: "+visits+" (счётчик хранится только в этом браузере)";
 })();
+</script>
+
+
+<script>
+const fmtNum=n=>Number(n).toLocaleString("ru-RU",{maximumFractionDigits:2});
+function calcLoan(){const a=Number(loanAmount.value),r=Number(loanRate.value),n=Number(loanMonths.value),o=loanResult;if(!loanAmount.value||!loanRate.value||!loanMonths.value||!Number.isFinite(a)||!Number.isFinite(r)||!Number.isInteger(n)||a<=0||r<0||r>1000||n<1||n>1200){o.textContent="Проверь сумму, ставку и срок.";return;}const m=r/1200,p=m===0?a/n:a*m/(1-Math.pow(1+m,-n)),t=p*n;o.textContent="Платёж в месяц: "+fmtNum(p)+" ₽. Всего: "+fmtNum(t)+" ₽. Переплата: "+fmtNum(t-a)+" ₽. Расчёт ориентировочный, без комиссий.";}
+function calcCompound(){const a=Number(compoundStart.value),r=Number(compoundRate.value),n=Number(compoundPeriods.value),o=compoundResult;if(!compoundStart.value||!compoundRate.value||!compoundPeriods.value||!Number.isFinite(a)||!Number.isFinite(r)||!Number.isInteger(n)||a<0||r<0||r>1000||n<0||n>10000){o.textContent="Проверь значения.";return;}const t=a*Math.pow(1+r/100,n);o.textContent="Итог: "+fmtNum(t)+" ₽. Начислено: "+fmtNum(t-a)+" ₽.";}
+function calcVAT(){const a=Number(vatAmount.value),r=Number(vatRate.value),o=vatResult;if(!vatAmount.value||!Number.isFinite(a)||!Number.isFinite(r)||a<0||r<0||r>100){o.textContent="Проверь сумму и ставку.";return;}const v=vatMode.value==="add"?a*r/100:a*r/(100+r);o.textContent="НДС: "+fmtNum(v)+" ₽. "+(vatMode.value==="add"?"Сумма с НДС: "+fmtNum(a+v):"Сумма без НДС: "+fmtNum(a-v))+" ₽.";}
+function calcUnitPrice(){const p=Number(unitPrice.value),q=Number(unitQuantity.value),u=unitName.value.trim()||"ед.";if(!unitPrice.value||!unitQuantity.value||!Number.isFinite(p)||!Number.isFinite(q)||p<0||q<=0){unitPriceResult.textContent="Укажи цену и количество больше нуля.";return;}unitPriceResult.textContent="Цена за 1 "+u+": "+fmtNum(p/q)+" ₽.";}
+function calcAverage(){const raw=averageValues.value.trim(),parts=raw.split(/[;,\s]+/).filter(Boolean),nums=parts.map(Number);if(!parts.length||nums.some(x=>!Number.isFinite(x))){averageResult.textContent="Введи корректные числа через пробел или запятую.";return;}averageResult.textContent="Чисел: "+nums.length+". Среднее: "+fmtNum(nums.reduce((a,b)=>a+b,0)/nums.length)+".";}
+function calcDateDiff(){const a=dateStart.value,b=dateEnd.value;if(!a||!b){dateDiffResult.textContent="Выбери обе даты.";return;}const d=Math.round(Math.abs(Date.parse(a+"T00:00:00Z")-Date.parse(b+"T00:00:00Z"))/86400000);dateDiffResult.textContent="Разница: "+d+" дней.";}
+function changeCase(mode){let s=caseText.value;if(mode==="upper")s=s.toLocaleUpperCase("ru");else if(mode==="lower")s=s.toLocaleLowerCase("ru");else s=s.toLocaleLowerCase("ru").replace(/(^|[\s-])([а-яёa-z])/gu,(m,a,b)=>a+b.toLocaleUpperCase("ru"));caseText.value=s;caseResult.textContent=s||"Введи текст.";}
+function processList(mode){const a=listText.value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),b=mode==="unique"?[...new Set(a)]:a.slice().sort((x,y)=>x.localeCompare(y,"ru"));listResult.textContent=b.join("\n")||"Список пуст.";}
+function formatJSON(){try{jsonResult.textContent=JSON.stringify(JSON.parse(jsonInput.value),null,2);}catch(e){jsonResult.textContent="Ошибка JSON: проверь скобки, кавычки и запятые.";}}
 </script>
 
 </body>
